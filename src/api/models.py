@@ -42,12 +42,12 @@ class Product(db.Model):
     __tablename__ = "products"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
     description: Mapped[str] = mapped_column(String(300))
-    price: Mapped[float] = mapped_column(Float)
+    price: Mapped[float] = mapped_column(Float, nullable=False)
     image: Mapped[str] = mapped_column(String())
-    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"), nullable=False)
-    vendor_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True)
+    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"), nullable=False)
+    vendor_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     stock: Mapped[int] = mapped_column(Integer, default=0)
     creation_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))
 
@@ -55,6 +55,17 @@ class Product(db.Model):
     category: Mapped["Category"] = relationship(back_populates="products")
     vendor: Mapped["User"] = relationship(back_populates="products")
     
+    #Metodo para crear producto
+    @classmethod
+    def create_product(cls, data):
+        try:
+            new_product = cls(**data)
+            db.session.add(new_product)
+            db.session.commit()
+            return True
+        except Exception as error:
+            print(error)
+            return None
 
     def serialize(self):
         return {
@@ -116,7 +127,7 @@ class OrderItem(db.Model):
         }
 
 class Category(db.Model):
-    __tablename__ = "categories"
+    # __tablename__ = "categories"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True, nullable=False)
