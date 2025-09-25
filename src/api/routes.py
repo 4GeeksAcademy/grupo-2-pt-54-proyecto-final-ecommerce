@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product
+from api.models import db, User, Product, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -36,6 +36,20 @@ def get_all_products():
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": error}), 500
 
+@api.route('/categories', methods=['GET'])
+def get_all_categories():
+    try:
+        category_list = []
+        # Para mostrar todos las categorias. (Tipo: select all)
+        categories = db.session.execute(db.select(Category)).scalars().all()
+        for category in categories:
+            category_list.append(category.serialize())
+
+        return jsonify({"categories": category_list}), 200
+    except Exception as error:
+        print(error)
+        return jsonify({"msg": "Ocurrió un error", "error": error}), 500
+    
 @api.route('products/<int:product_id>', methods=['GET'])
 def get_product_by_id(product_id):
     try:
