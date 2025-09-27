@@ -62,3 +62,18 @@ def get_product_by_id(product_id):
     except Exception as error:
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": error}), 500
+    
+@api.route('/category/<int:category_id>/products', methods=['GET'])
+def get_products_by_category(category_id):
+    try:
+        products = db.session.execute(db.select(Product).filter_by(category_id=category_id)).scalars().all()
+
+        if products is None:
+            return jsonify({"msg": "Productos no encontrado"}), 404
+        
+        products_list = [product.serialize() for product in products]   
+
+        return jsonify({"products": products_list}), 200
+    except Exception as error:
+        print(error)
+        return jsonify({"msg": "Ocurrió un error", "error": error}), 500
