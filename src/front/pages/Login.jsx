@@ -3,7 +3,7 @@ import { useState } from "react"
 
 export const Login = () => {
 
-    const [newUser, setNewUser] = useState({'role': 'user'});
+    const [newUser, setNewUser] = useState({'role': 'USER'});
 
     const [user, setUser] = useState({});
 
@@ -120,7 +120,7 @@ export const Login = () => {
                                                         />
                                                         <i class="fa-solid fa-lock uil uil-lock-al input-icon"></i>
                                                     </div>
-                                                    <a href="#" className="btn mt-4">
+                                                    <a  className="btn mt-4" onClick={handleLogin}>
                                                         submit
                                                     </a>
                                                 </div>
@@ -134,7 +134,7 @@ export const Login = () => {
                                                         <div className="d-flex">
                                                             <input
                                                                 type="text"
-                                                                name="first-name"
+                                                                name="first_name"
                                                                 className="form-style"
                                                                 placeholder="First Name"
                                                                 id="first-name"
@@ -143,7 +143,7 @@ export const Login = () => {
                                                             />
                                                             <input
                                                                 type="text"
-                                                                name="last-name"
+                                                                name="last_name"
                                                                 className="form-style"
                                                                 placeholder="Last Name"
                                                                 id="last-name"
@@ -180,9 +180,9 @@ export const Login = () => {
                                                     <div className="form-group mt-2">
                                                         <label For="role">Select Option</label>
                                                         <select name="role" id="role" className="form-style" onChange={handleOnchangeRegistro}>
-                                                            <option value="user">Purchase</option>
+                                                            <option value="USER">Purchase</option>
                                                             <i class="fa-solid fa-lock input-icon"></i>
-                                                            <option value="seller">Sale</option>
+                                                            <option value="SELLER">Sale</option>
                                                         </select>
                                                     </div>
                                                     <a className="btn mt-4" onClick={handleRegistro}>
