@@ -19,9 +19,9 @@ class User(db.Model):
     first_name: Mapped[str] = mapped_column(String(120))
     last_name: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(120), unique=True)
-    password: Mapped[str] = mapped_column(String(16))
+    password: Mapped[str] = mapped_column(String(200))
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER)
-    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     creation_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))
 
     #relationship
@@ -37,7 +37,19 @@ class User(db.Model):
             "is_active": self.is_active,
             # do not serialize the password, its a security breach
         }
-    
+
+    @classmethod
+    def create_user(cls, data):
+        try:
+            new_user = cls(**data)
+            db.session.add(new_user)
+            db.session.commit()
+            return True
+        except Exception as error:
+            print(error)
+            db.session.rollback()
+            return None
+
 class Product(db.Model):
     __tablename__ = "products"
 
