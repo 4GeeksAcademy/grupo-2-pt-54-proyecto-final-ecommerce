@@ -50,7 +50,7 @@ def get_all_categories():
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": error}), 500
     
-@api.route('products/<int:product_id>', methods=['GET'])
+@api.route('/products/<int:product_id>', methods=['GET'])
 def get_product_by_id(product_id):
     try:
         product = db.session.execute(db.select(Product).filter_by(id=product_id)).scalar_one_or_none()
@@ -77,3 +77,17 @@ def get_products_by_category(category_id):
     except Exception as error:
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": error}), 500
+    
+@api.route('/search/products/<product_name>', methods=['GET'])
+def get_products_by_nam(product_name):
+    try:
+        products = db.session.execute(db.select(Product).filter(Product.name.ilike(f"%{product_name}%"))).scalars().all()
+
+        if not products:
+            return jsonify({"msg": "Producto no encontrado"}), 404
+        
+        products_list = [product.serialize() for product in products]
+        return jsonify({"products": products_list}), 200
+    except Exception as error:
+        print(error)
+        return jsonify({"msg": "Ocurrió un error", "error": str(error)}), 500
