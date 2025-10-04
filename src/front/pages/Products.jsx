@@ -3,6 +3,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom"
 
 export const Products = () => {
     const { categoryId } = useParams();
@@ -19,18 +20,24 @@ export const Products = () => {
     if (products.length == 0) return <div>No hay productos para esta categoria...</div>;
 
     return (
-        <div>
+        <div className='d-flex justify-content-between align-items-center'>
+            <div>
             {products.map((products) => {
                 return (
-                    <div key={products.id}>
-                        <h2>{products.name}</h2>
+                    <div key={products.id} className='mb-3'>
+                        <h2 className='text-success'>{products.name}</h2>
                         <p>{products.description}</p>
                         <p>Price: ${products.price}</p>
                         <hr />
                     </div>
-                )
+                );
             })}
-            
+            </div>
+            <div>
+                <Link to="/" className='btn btn-outline-secondary'>
+                    Regresar
+                </Link>
+            </div>
         </div>
 
     )

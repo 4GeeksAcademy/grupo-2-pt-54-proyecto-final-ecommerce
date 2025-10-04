@@ -32,15 +32,16 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar navbar-dark bg-dark">
 			<div className="container">
-
-				<span className="navbar-brand mb-0 h1 text-success">
-					<i className="fa-solid fa-store me-2"></i>ShopNow
-				</span>
-				<div class="btn-group me-auto ms-3">
-					<button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				<Link to="/">
+					<span className="navbar-brand mb-0 h1 text-success">
+						<i className="fa-solid fa-store me-2"></i>ShopNow
+					</span>
+				</Link>
+				<div className="btn-group me-auto ms-3">
+					<button type="button" className="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 						Categories
 					</button>
-					<ul class="dropdown-menu">
+					<ul className="dropdown-menu">
 						{categories.map((category) => (
 							<li key={category.id}>
 								<Link className="dropdown-item" to={`/products/${category.id}`}>
@@ -49,6 +50,10 @@ export const Navbar = () => {
 							</li>))}
 					</ul>
 				</div>
+				{/* AQUI PUEDE IR LA SEARCHBAR */}
+
+
+
 				<div className="ms-auto d-flex gap-2">
 					<button
 						className="btn btn-success"
@@ -59,6 +64,46 @@ export const Navbar = () => {
 				</div>
 			</div>
 		</nav>
+                                                            /* ESTA ES LA SEARCHBAR */ 
+		// const handleSearch = async (query = "") => {
+		// 	try {
+		// 		const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search/products/${encodeURIComponent(query)}`);
+		// 		if (!response.ok) {
+		// 			throw new Error("Error al obtener los productos");
+		// 		}
+		// 		const data = await response.json();
+		// 		setSearchResults(data.products);
+		// 	} catch (err) {
+		// 		console.error(err);
+		// 		setSearchResults([]);
+		// 	}
+		// };
+
+		// useEffect(() => {
+		// }, []);
+
+		// return (
+		// 	<div>
+		// 		<SearchBar onSearch={handleSearch} />
+		// 		<h1>Resultados de la búsqueda:</h1>
+		// 		{
+		// 			searchResults.length == 0 ? (
+		// 				<h1>No hay resultados</h1>
+		// 			) : (
+		// 				<ul>
+		// 					{searchResults.map(product => (
+		// 						<li key={product.id}>
+		// 							<h2>{product.name}</h2>
+		// 							<img src={product.image} alt={product.name} />
+		// 							<p>{product.description}</p>
+		// 							<p>Precio: ${product.price}</p>
+		// 						</li>
+		// 					))}
+		// 				</ul>
+		// 			)
+		// 		}
+		// 	</div>
+		// );
 	);
 
 	// return (
