@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 export const Navbar = () => {
 	const { store, dispatch } = useGlobalReducer();
 	const cartQty = store.cart?.reduce((s, it) => s + (it.qty || 0), 0) || 0;
 	const [categories, setCategories] = useState([])
+	const navigate = useNavigate();
 	const getCategories = async () => {
 		try {
 			const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/categories`);
@@ -23,6 +25,19 @@ export const Navbar = () => {
 			console.error(err)
 		}
 	}
+	const handleSearch = async (query = "") => {
+			try {
+				const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search/products/${encodeURIComponent(query)}`);
+				if (!response.ok) {
+					throw new Error("Error al obtener los productos");
+				}
+				const data = await response.json();
+				dispatch({ type: "set_search_results", payload: { products: data.products } });
+				navigate("/search-results");
+			} catch (err) {
+				console.error(err);
+			}
+		};
 
 	console.log(categories)
 
@@ -51,7 +66,8 @@ export const Navbar = () => {
 					</ul>
 				</div>
 				{/* AQUI PUEDE IR LA SEARCHBAR */}
-
+				
+		 		<SearchBar onSearch={handleSearch}/>
 
 
 				<div className="ms-auto d-flex gap-2">
@@ -64,116 +80,5 @@ export const Navbar = () => {
 				</div>
 			</div>
 		</nav>
-                                                            /* ESTA ES LA SEARCHBAR */ 
-		// const handleSearch = async (query = "") => {
-		// 	try {
-		// 		const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search/products/${encodeURIComponent(query)}`);
-		// 		if (!response.ok) {
-		// 			throw new Error("Error al obtener los productos");
-		// 		}
-		// 		const data = await response.json();
-		// 		setSearchResults(data.products);
-		// 	} catch (err) {
-		// 		console.error(err);
-		// 		setSearchResults([]);
-		// 	}
-		// };
-
-		// useEffect(() => {
-		// }, []);
-
-		// return (
-		// 	<div>
-		// 		<SearchBar onSearch={handleSearch} />
-		// 		<h1>Resultados de la búsqueda:</h1>
-		// 		{
-		// 			searchResults.length == 0 ? (
-		// 				<h1>No hay resultados</h1>
-		// 			) : (
-		// 				<ul>
-		// 					{searchResults.map(product => (
-		// 						<li key={product.id}>
-		// 							<h2>{product.name}</h2>
-		// 							<img src={product.image} alt={product.name} />
-		// 							<p>{product.description}</p>
-		// 							<p>Precio: ${product.price}</p>
-		// 						</li>
-		// 					))}
-		// 				</ul>
-		// 			)
-		// 		}
-		// 	</div>
-		// );
-	);
-
-	// return (
-	// 	<nav className="navbar navbar-expand-lg bg-body-tertiary">
-	// 		<div className="container-fluid">
-	// 			<a className="navbar-brand" href="#">
-	// 				Navbar
-	// 			</a>
-	// 			<button
-	// 				className="navbar-toggler"
-	// 				type="button"
-	// 				data-bs-toggle="collapse"
-	// 				data-bs-target="#navbarSupportedContent"
-	// 				aria-controls="navbarSupportedContent"
-	// 				aria-expanded="false"
-	// 				aria-label="Toggle navigation"
-	// 			>
-	// 				<span className="navbar-toggler-icon" />
-	// 			</button>
-	// 			<div className="collapse navbar-collapse" id="navbarSupportedContent">
-	// 				<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-	// 					<li className="nav-item">
-	// 						<a className="nav-link active" aria-current="page" href="#">
-	// 							Home
-	// 						</a>
-	// 					</li>
-	// 					<li className="nav-item">
-	// 						<a className="nav-link" href="#">
-	// 							Link
-	// 						</a>
-	// 					</li>
-	// 					<li className="nav-item dropdown">
-	// 						<a
-	// 							className="nav-link dropdown-toggle"
-	// 							href="#"
-	// 							role="button"
-	// 							data-bs-toggle="dropdown"
-	// 							aria-expanded="false"
-	// 						>
-	// 							Categories
-	// 						</a>
-	// 						<ul className="dropdown-menu">
-	// 							{categories.map((category) => (
-	// 								<li key={category.id}>
-	// 								<Link className="dropdown-item" to={`/products/${category.id}`}>
-	// 									{category.name}
-	// 								</Link>
-	// 							</li>))}
-	// 						</ul>
-	// 					</li>
-	// 					<li className="nav-item">
-	// 						<a className="nav-link disabled" aria-disabled="true">
-	// 							Disabled
-	// 						</a>
-	// 					</li>
-	// 				</ul>
-	// 				<form className="d-flex" role="search">
-	// 					<input
-	// 						className="form-control me-2"
-	// 						type="search"
-	// 						placeholder="Search"
-	// 						aria-label="Search"
-	// 					/>
-	// 					<button className="btn btn-outline-success" type="submit">
-	// 						Search
-	// 					</button>
-	// 				</form>
-	// 			</div>
-	// 		</div>
-	// 	</nav>
-
-	// );
+)
 };

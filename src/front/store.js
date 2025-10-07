@@ -36,6 +36,7 @@ export const initialStore = () => {
         image: "https://picsum.photos/seed/cyclonex10/600/600",
       },
     ],
+    searchResults: [],
     cart: [],
     drawer: false,
   };
@@ -101,6 +102,9 @@ export default function storeReducer(store, action = {}) {
 
     case "toggle_cart":
       return { ...store, drawer: !store.drawer };
+    
+    case "set_search_results":
+      return { ...store, searchResults: [...action.payload.products] };
 
     default:
       throw Error("Unknown action.");
