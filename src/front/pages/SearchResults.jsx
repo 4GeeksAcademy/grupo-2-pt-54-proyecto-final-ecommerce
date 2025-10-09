@@ -5,29 +5,29 @@ import { Link } from "react-router-dom"
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const SearchResults = () => {
-    const { store, dispatch } = useGlobalReducer();
-    const [quantities, setQuantities] = useState({});
+  const { store, dispatch } = useGlobalReducer();
+  const [quantities, setQuantities] = useState({});
 
-    const setQty = (id, value) => {
+  const setQty = (id, value) => {
     const n = Math.max(1, parseInt(value || 1, 10));
     setQuantities(q => ({ ...q, [id]: n }));
   };
 
-     const addToCart = (p) => {
+  const addToCart = (p) => {
     const qty = quantities[p.id] || 1;
     dispatch({ type: "add_to_cart", payload: { product: p, qty } });
     dispatch({ type: "open_cart" });
   };
 
-    if (store.searchResults.length == 0) return <div>No hay productos para esta busqueda...</div>;
+  if (store.searchResults.length == 0) return <div>No hay productos para esta busqueda...</div>;
 
-    return (
-        <div className="container py-4">
-            <div className="row g-3">
+  return (
+    <div className="container py-4">
+      <div className="row g-3">
         {store.searchResults?.map((p) => (
           <div className="col-12 col-sm-6 col-lg-4" key={p.id}>
             <div className="card h-100 shadow-sm">
-              <img src={p.image} className="card-img-top" alt={p.name} />
+              <img src={"https://picsum.photos/100/100"} className="card-img-top" alt={p.name} />
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title mb-1">{p.name}</h5>
                 <span className="text-success fw-bold mb-3">
@@ -64,10 +64,10 @@ export const SearchResults = () => {
           </div>
         )}
       </div>
-        </div>
+    </div>
 
-    )
+  )
 }
 
 
- 
+
