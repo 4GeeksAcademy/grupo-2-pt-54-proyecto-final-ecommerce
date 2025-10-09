@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react"
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import SearchBar from "../components/SearchBar.jsx";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom"
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export const Home = () => {
-  const [searchResults, setSearchResults] = useState([]);
-  //aqui hago un llamado a la API para obtener los productos
+export const SearchResults = () => {
   const { store, dispatch } = useGlobalReducer();
-  const cartQty = store.cart?.reduce((s, it) => s + (it.qty || 0), 0) || 0;
   const [quantities, setQuantities] = useState({});
 
   const setQty = (id, value) => {
@@ -21,36 +19,15 @@ export const Home = () => {
     dispatch({ type: "open_cart" });
   };
 
-  const getProducts = async () => {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
-
-    if (!response.ok) {
-      throw Error('Error de petición HTTP: ', response.status)
-    }
-    const data = await response.json();
-    dispatch({ type: 'load_products', payload: data.products });
-    return data
-
-  }
-
-  useEffect(()=>{
-    getProducts()
-  }, [])
+  if (store.searchResults.length == 0) return <div>No hay productos para esta busqueda...</div>;
 
   return (
     <div className="container py-4">
-      <div className="text-center mb-4">
-        <h1 className="mb-2 text-success"><i className="fa-solid fa-store me-2"></i>ShopNow</h1>
-        <p className="text-muted mb-1">Catálogo</p>
-        <span className="badge bg-success"><i className="fa-solid fa-cart-shopping me-1"></i>{cartQty}</span>
-      </div>
-
-
       <div className="row g-3">
-        {store.products?.map((p) => (
+        {store.searchResults?.map((p) => (
           <div className="col-12 col-sm-6 col-lg-4" key={p.id}>
             <div className="card h-100 shadow-sm">
-              <img src={p.image} className="card-img-top" alt={p.name} />
+              <img src={"https://picsum.photos/100/100"} className="card-img-top" alt={p.name} />
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title mb-1">{p.name}</h5>
                 <span className="text-success fw-bold mb-3">
@@ -79,14 +56,18 @@ export const Home = () => {
             </div>
           </div>
         ))}
-        {!store.products?.length && (
+        {!store.searchResults?.length && (
           <div className="col-12">
             <div className="alert alert-secondary text-center mb-0">
-              <i className="fa-regular fa-circle-xmark me-2"></i>Sin productos
+              <i className="fa-regular fa-circle-xmark me-2"></i>Sin resultados de busqueda
             </div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+
+  )
+}
+
+
+

@@ -6,14 +6,15 @@ import {
   Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Products } from "./pages/Products";
 import Newproduct from "./pages/Newproduct";
 import AllProducts from "./pages/AllProducts";
 import EditProduct from "./pages/EditProduct";
+import { Cart } from "./pages/Cart";
+import { SearchResults } from "./pages/SearchResults";
+import  Product  from "./pages/Product";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,9 @@ export const router = createBrowserRouter(
       <Route path="/new-product" element={<Newproduct />} />
       <Route path="/login" element={<Login />} />
       <Route path="/products/:categoryId" element={<Products />} />
+      <Route path="/product/:productId" element={<Product />} />
+      <Route path="/search-results" element={<SearchResults />} />
+      <Route path="/cart" element={<Cart />} />
     </Route>
   )
 );
