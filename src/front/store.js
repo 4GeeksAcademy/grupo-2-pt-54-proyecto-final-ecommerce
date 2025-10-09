@@ -1,19 +1,4 @@
 export const initialStore = () => {
-  // return {
-  //   message: null,
-  //   todos: [
-  //     {
-  //       id: 1,
-  //       title: "Make the bed",
-  //       background: null,
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Do my homework",
-  //       background: null,
-  //     },
-  //   ],
-  // };
   return {
     message: null,
     products: [
@@ -25,23 +10,12 @@ export const initialStore = () => {
       },
       {
         id: 2,
-        title: "Do my homework",
-        background: null,
+        name: "Mouse inalámbrico Logitech",
+        price: 499,
+        image: "https://picsum.photos/seed/mouse/600/600",
       },
     ],
     categories: [],
-    products: []
-        name: "Teclado Mecánico RGB Razer",
-        price: 1299,
-        image: "https://picsum.photos/seed/rgbkbd/600/600",
-      },
-      {
-        id: 3,
-        name: "Mouse Logitech G Hero 502x",
-        price: 3499,
-        image: "https://picsum.photos/seed/cyclonex10/600/600",
-      },
-    ],
     searchResults: [],
     cart: [],
     drawer: false,
@@ -56,25 +30,6 @@ export default function storeReducer(store, action = {}) {
         message: action.payload,
       };
 
-    case "add_task":
-      const { id, color } = action.payload;
-
-      return {
-        ...store,
-        todos: store.todos.map((todo) =>
-          todo.id === id ? { ...todo, background: color } : todo
-        ),
-      };
-
-    case "add_to_cart": {
-      const { product, qty = 1 } = action.payload;
-      const exist = store.cart.find((i) => i.id === product.id);
-      return {
-        ...store,
-        todos: store.todos.map((todo) =>
-          todo.id === id ? { ...todo, background: color } : todo
-        ),
-      };
     case "load_categories":
       return {
         ...store,
@@ -84,8 +39,15 @@ export default function storeReducer(store, action = {}) {
     case "load_products":
       return {
         ...store,
-        products: action.payload
-      }
+        products: action.payload,
+      };
+
+    case "add_to_cart": {
+      const { product, qty = 1 } = action.payload;
+      const exist = store.cart.find((i) => i.id === product.id);
+
+      return {
+        ...store,
         cart: exist
           ? store.cart.map((i) =>
               i.id === product.id
@@ -101,7 +63,9 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         cart: store.cart
-          .map((i) => (i.id === id ? { ...i, qty: (i.qty || 1) - 1 } : i))
+          .map((i) =>
+            i.id === id ? { ...i, qty: (i.qty || 1) - 1 } : i
+          )
           .filter((i) => i.qty > 0),
       };
     }
@@ -123,7 +87,7 @@ export default function storeReducer(store, action = {}) {
 
     case "toggle_cart":
       return { ...store, drawer: !store.drawer };
-    
+
     case "set_search_results":
       return { ...store, searchResults: [...action.payload.products] };
 
