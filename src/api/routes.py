@@ -36,6 +36,19 @@ def get_all_products():
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": error}), 500
 
+@api.route('/categories/<name>', methods=['POST'])
+def add_new_category(name):
+    try:
+        category = Category.create_category({"name": name})
+
+        if category:
+            return jsonify({'msg': "Categoria creada correctamente"}), 201
+
+        return jsonify({"msg": "No fue posible crear la categoria"}), 500
+    except Exception as error:
+        print(error)
+        return jsonify({"msg": "Ocurrió un error", "error": error}), 500
+
 @api.route('/categories', methods=['GET'])
 def get_all_categories():
     try:
