@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar.jsx";
 export const Home = () => {
 	const [searchResults, setSearchResults] = useState([]);
 	//aqui hago un llamado a la API para obtener los productos
-	  const { store, dispatch } = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const cartQty = store.cart?.reduce((s, it) => s + (it.qty || 0), 0) || 0;
   const [quantities, setQuantities] = useState({});
 
@@ -19,6 +19,22 @@ export const Home = () => {
     dispatch({ type: "add_to_cart", payload: { product: p, qty } });
     dispatch({ type: "open_cart" });
   };
+
+  const getProducts = async () => {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
+
+    if (!response.ok) {
+      throw Error('Error de petición HTTP: ', response.status)
+    }
+    const data = await response.json();
+    dispatch({ type: 'load_products', payload: data.products });
+    return data
+
+  }
+
+  useEffect(()=>{
+    getProducts()
+  }, [])
 
   return (
     <div className="container py-4">
