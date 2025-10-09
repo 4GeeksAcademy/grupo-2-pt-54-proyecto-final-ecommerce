@@ -1,8 +1,8 @@
-/* 
+
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 
-body{
+/* body{
 	font-family: 'Poppins', sans-serif;
 	font-weight: 300;
 	font-size: 15px;
@@ -10,7 +10,7 @@ body{
 	color: #8921de;
 	background-color: #12ffe3;
 	overflow-x: hidden;
-}
+} */
 a {
 	cursor: pointer;
   transition: all 200ms linear;
@@ -232,7 +232,7 @@ h6 span{
     transition: all 200ms linear;
 }
 
-.btn{  
+/* .btn{  
   border-radius: 4px;
   height: 44px;
   font-size: 13px;
@@ -270,7 +270,7 @@ h6 span{
   background-color: #102770;
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
-}
+} */
 
 
 
@@ -287,4 +287,4 @@ h6 span{
 	height: 26px;
 	width: auto;
 	display: block;
-} */
+} 

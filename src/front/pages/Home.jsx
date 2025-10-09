@@ -21,6 +21,22 @@ export const Home = () => {
     dispatch({ type: "open_cart" });
   };
 
+  const getProducts = async () => {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
+
+    if (!response.ok) {
+      throw Error('Error de petición HTTP: ', response.status)
+    }
+    const data = await response.json();
+    dispatch({ type: 'load_products', payload: data.products });
+    return data
+
+  }
+
+  useEffect(()=>{
+    getProducts()
+  }, [])
+
   return (
     <div className="container py-4">
       <div className="text-center mb-4">

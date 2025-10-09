@@ -152,3 +152,17 @@ class Category(db.Model):
             "id": self.id,
             "name": self.name,
         }
+    
+    @classmethod
+    def create_category(cls, data):
+        try:
+            new_category = cls(**data)
+            print(new_category)
+            print(data)
+            db.session.add(new_category)
+            db.session.commit()
+            return True
+        except Exception as error:
+            print(error)
+            db.session.rollback()
+            return None

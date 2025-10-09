@@ -9,6 +9,9 @@ import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { Products } from "./pages/Products";
+import Newproduct from "./pages/Newproduct";
+import AllProducts from "./pages/AllProducts";
+import EditProduct from "./pages/EditProduct";
 import { Cart } from "./pages/Cart";
 import { SearchResults } from "./pages/SearchResults";
 import  Product  from "./pages/Product";
@@ -26,6 +29,10 @@ export const router = createBrowserRouter(
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
+      <Route path="/new-product" element={<Newproduct />} />
+      <Route path="/edit-product/:productId" element={<EditProduct />} />
+      <Route path="/all-products" element={<AllProducts />} />
+      <Route path="/new-product" element={<Newproduct />} />
       <Route path="/login" element={<Login />} />
       <Route path="/products/:categoryId" element={<Products />} />
       <Route path="/product/:productId" element={<Product />} />

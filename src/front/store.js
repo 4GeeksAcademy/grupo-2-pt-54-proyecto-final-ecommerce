@@ -25,6 +25,12 @@ export const initialStore = () => {
       },
       {
         id: 2,
+        title: "Do my homework",
+        background: null,
+      },
+    ],
+    categories: [],
+    products: []
         name: "Teclado Mecánico RGB Razer",
         price: 1299,
         image: "https://picsum.photos/seed/rgbkbd/600/600",
@@ -65,6 +71,21 @@ export default function storeReducer(store, action = {}) {
       const exist = store.cart.find((i) => i.id === product.id);
       return {
         ...store,
+        todos: store.todos.map((todo) =>
+          todo.id === id ? { ...todo, background: color } : todo
+        ),
+      };
+    case "load_categories":
+      return {
+        ...store,
+        categories: action.payload,
+      };
+
+    case "load_products":
+      return {
+        ...store,
+        products: action.payload
+      }
         cart: exist
           ? store.cart.map((i) =>
               i.id === product.id
