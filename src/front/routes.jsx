@@ -14,7 +14,8 @@ import AllProducts from "./pages/AllProducts";
 import EditProduct from "./pages/EditProduct";
 import { Cart } from "./pages/Cart";
 import { SearchResults } from "./pages/SearchResults";
-import  Product  from "./pages/Product";
+import Product from "./pages/Product";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,7 +38,9 @@ export const router = createBrowserRouter(
       <Route path="/products/:categoryId" element={<Products />} />
       <Route path="/product/:productId" element={<Product />} />
       <Route path="/search-results" element={<SearchResults />} />
-      <Route path="/cart" element={<Cart />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/cart" element={<Cart />} />
+      </Route>
     </Route>
   )
 );
