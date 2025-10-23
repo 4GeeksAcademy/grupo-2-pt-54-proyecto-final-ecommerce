@@ -7,6 +7,8 @@ export const Navbar = () => {
 	const { store, dispatch } = useGlobalReducer();
 	const cartQty = store.cart?.reduce((s, it) => s + (it.qty || 0), 0) || 0;
 	const [categories, setCategories] = useState([])
+	const isAuthenticated = sessionStorage.getItem("access_token");
+
 	const navigate = useNavigate();
 	const getCategories = async () => {
 		try {
@@ -26,18 +28,22 @@ export const Navbar = () => {
 		}
 	}
 	const handleSearch = async (query = "") => {
-			try {
-				const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search/products/${encodeURIComponent(query)}`);
-				if (!response.ok) {
-					throw new Error("Error al obtener los productos");
-				}
-				const data = await response.json();
-				dispatch({ type: "set_search_results", payload: { products: data.products } });
-				navigate("/search-results");
-			} catch (err) {
-				console.error(err);
+		try {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search/products/${encodeURIComponent(query)}`);
+			if (!response.ok) {
+				throw new Error("Error al obtener los productos");
 			}
-		};
+			const data = await response.json();
+			dispatch({ type: "set_search_results", payload: { products: data.products } });
+			navigate("/search-results");
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleLogout = ()=>{
+		sessionStorage.removeItem('access_token');
+		navigate("/")
+	}
 
 	console.log(categories)
 
@@ -66,8 +72,8 @@ export const Navbar = () => {
 					</ul>
 				</div>
 				{/* AQUI PUEDE IR LA SEARCHBAR */}
-				
-		 		<SearchBar onSearch={handleSearch}/>
+
+				<SearchBar onSearch={handleSearch} />
 
 
 				<div className="ms-auto d-flex gap-2">
@@ -77,8 +83,14 @@ export const Navbar = () => {
 					>
 						<i className="fa-solid fa-cart-shopping me-2"></i>{cartQty}
 					</button>
+					{isAuthenticated ? 
+						<button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+						:
+						<Link to="/login">
+							<button type="button" class="btn btn-outline-primary">Login / Sign Up</button>
+						</Link>}
 				</div>
 			</div>
 		</nav>
-)
+	)
 };

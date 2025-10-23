@@ -40,7 +40,7 @@ export const Products = () => {
                 {products.map((p) => (
                     <div className="col-12 col-sm-6 col-lg-4" key={p.id}>
                         <div className="card h-100 shadow-sm">
-                            <img src={"https://picsum.photos/100/100"} className="card-img-top" alt={p.name} />
+                            <img src={p.image} className="card-img-top" alt={p.name} />
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title mb-1">{p.name}</h5>
                                 <span className="text-success fw-bold mb-3">

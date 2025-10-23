@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
+
 const money = (n) =>
     new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(n);
 
 export default function CartDrawer() {
     const { store, dispatch } = useGlobalReducer();
     const { drawer, cart } = store;
+    const isAuthenticated = sessionStorage.getItem("access_token");
 
     if (!drawer) return null;
 
@@ -74,7 +76,7 @@ export default function CartDrawer() {
                     <div className="d-flex justify-content-between fw-semibold"><span>Total</span><span>{money(total)}</span></div>
 
                     <Link
-                        to="/cart"
+                        to={`/${isAuthenticated ? "cart" : "login"}`}
                         className="btn btn-success w-100 mt-2"
                         onClick={() => dispatch({ type: "close_cart" })}
                     >

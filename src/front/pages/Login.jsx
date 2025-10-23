@@ -1,11 +1,12 @@
 import { useState } from "react"
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
 
     const [newUser, setNewUser] = useState({'role': 'USER'});
-
     const [user, setUser] = useState({});
+    const navigate = useNavigate();
 
     const handleOnchangeRegistro = (event) => {
         const target = event.target;
@@ -65,6 +66,9 @@ export const Login = () => {
 
             const body = await response.json();
             sessionStorage.setItem("access_token", body.access_token)
+            console.log("el token es:")
+            console.log(body.access_token)
+            navigate("/cart")
 
         }catch(err){
             console.error(error)
@@ -92,7 +96,7 @@ export const Login = () => {
                                 <label htmlFor="reg-log" />
                                 <div className="card-3d-wrap mx-auto">
                                     <div className="card-3d-wrapper">
-                                        <div className="card-front">
+                                        <div className="card-front text-success">
                                             <div className="center-wrap">
                                                 <div className="section text-center">
                                                     <h4 className="mb-4 pb-3">Log In</h4>
@@ -102,11 +106,11 @@ export const Login = () => {
                                                             name="email"
                                                             className="form-style"
                                                             placeholder="Your Email"
-                                                            id="email"
+                                                            id="log-email"
                                                             autoComplete="off"
                                                             onChange={handleOnchangeLogin}
                                                         />
-                                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                                        <i class="fa-solid text-success fa-envelope input-icon"></i>
                                                     </div>
                                                     <div className="form-group mt-2">
                                                         <input
@@ -114,13 +118,13 @@ export const Login = () => {
                                                             name="password"
                                                             className="form-style"
                                                             placeholder="Your Password"
-                                                            id="password"
+                                                            id="log-password"
                                                             autoComplete="off"
                                                             onChange={handleOnchangeLogin}
                                                         />
-                                                        <i class="fa-solid fa-lock uil uil-lock-al input-icon"></i>
+                                                        <i class="fa-solid text-success fa-lock uil uil-lock-al input-icon"></i>
                                                     </div>
-                                                    <a  className="btn mt-4" onClick={handleLogin}>
+                                                    <a  className="btn btn-success mt-4" onClick={handleLogin}>
                                                         submit
                                                     </a>
                                                 </div>
@@ -129,7 +133,7 @@ export const Login = () => {
                                         <div className="card-back">
                                             <div className="center-wrap">
                                                 <div className="section text-center">
-                                                    <h4 className="mt-2 mb-4 pb-3">Sign Up</h4>
+                                                    <h4 className="mt-2 text-success mb-4 pb-3">Sign Up</h4>
                                                     <div className="form-group">
                                                         <div className="d-flex">
                                                             <input
@@ -151,7 +155,7 @@ export const Login = () => {
                                                                 onChange={handleOnchangeRegistro}
                                                             />
                                                         </div>
-                                                        <i class="fa-solid fa-user input-icon"></i>
+                                                        <i class="fa-solid text-success fa-user input-icon"></i>
                                                     </div>
                                                     <div className="form-group mt-2">
                                                         <input
@@ -159,11 +163,11 @@ export const Login = () => {
                                                             name="email"
                                                             className="form-style"
                                                             placeholder="Your Email"
-                                                            id="email"
+                                                            id="sign-email"
                                                             autoComplete="off"
                                                             onChange={handleOnchangeRegistro}
                                                         />
-                                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                                        <i class="fa-solid text-success fa-envelope input-icon"></i>
                                                     </div>
                                                     <div className="form-group mt-2">
                                                         <input
@@ -171,21 +175,13 @@ export const Login = () => {
                                                             name="password"
                                                             className="form-style"
                                                             placeholder="Your Password"
-                                                            id="password"
+                                                            id="sign-password"
                                                             autoComplete="off"
                                                             onChange={handleOnchangeRegistro}
                                                         />
-                                                        <i class="fa-solid fa-lock input-icon"></i>
+                                                        <i class="fa-solid text-success fa-lock input-icon"></i>
                                                     </div>
-                                                    <div className="form-group mt-2">
-                                                        <label For="role">Select Option</label>
-                                                        <select name="role" id="role" className="form-style" onChange={handleOnchangeRegistro}>
-                                                            <option value="USER">Purchase</option>
-                                                            <i class="fa-solid fa-lock input-icon"></i>
-                                                            <option value="SELLER">Sale</option>
-                                                        </select>
-                                                    </div>
-                                                    <a className="btn mt-4" onClick={handleRegistro}>
+                                                    <a className="btn btn-success mt-4" onClick={handleRegistro}>
                                                         submit
                                                     </a>
                                                 </div>

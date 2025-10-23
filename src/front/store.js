@@ -1,6 +1,7 @@
 export const initialStore = () => {
   return {
     message: null,
+    access_token : '',
     products: [
       {
         id: 1,
