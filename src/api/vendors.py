@@ -27,7 +27,7 @@ def create_products():
             return jsonify({"msg": "Es necesario el precio del producto"}), 400
 
         if "category_id" not in body:
-            return jsonify({"msg": "Es necesario la categoria del producto"}),
+            return jsonify({"msg": "Es necesario la categoria del producto"}),400
 
         if "vendor_id" not in body:
             return jsonify({"msg": "Es necesario el id del vendedor producto"}), 400
