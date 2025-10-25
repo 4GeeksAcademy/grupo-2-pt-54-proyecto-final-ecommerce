@@ -52,7 +52,9 @@ const FormProduct = (props) => {
                     body: JSON.stringify(product),
                 }
             );
-
+            if (!response.ok){
+                console.error("Error al crear el producto ", response.statusText)
+            }
             const dataJson = await response.json();
             console.log('Producto creado correctamente:', dataJson);
             navigate("/all-products");

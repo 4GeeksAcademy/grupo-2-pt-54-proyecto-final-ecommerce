@@ -18,6 +18,7 @@ import Product from "./pages/Product";
 import Verify from "./pages/Verify";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,11 +41,13 @@ export const router = createBrowserRouter(
       <Route path="/products/:categoryId" element={<Products />} />
       <Route path="/product/:productId" element={<Product />} />
       <Route path="/search-results" element={<SearchResults />} />
-      <Route path="/cart" element={<Cart />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/reset-password" element={<Forgot />} />
       <Route path="/new-password" element={<Reset />} />
 
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/cart" element={<Cart />} />
+      </Route>
     </Route>
   )
 );

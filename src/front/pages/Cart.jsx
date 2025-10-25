@@ -1,12 +1,87 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Swal from "sweetalert2";
+import { useState } from "react";
+
+
+const stripePomise = loadStripe("pk_test_51SL5NSLOU9dM6CbHFAeRPL8rygWbVlYj4ZPVVZz80yUAehISmhDe6QBJ7NB3AtDoWJRwwIwjxdYF2nGMJyOdQ8Mm00jXO53coS")
 
 const money = (n) =>
     new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(n);
 
+const CheckoutForm = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!stripe || !elements) return;
+
+        setLoading(true);
+
+        const cardElement = elements.getElement(CardElement);
+
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+            type: "card",
+            card: cardElement,
+        });
+
+        if (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error en el pago",
+                text: error.message || "Hubo un problema al procesar el pago.",
+                confirmButtonColor: "#d33",
+            });
+        } else {
+            console.log("Pago exitoso:", paymentMethod);
+
+            Swal.fire({
+                icon: "success",
+                title: "¡Pago realizado con éxito!",
+                text: "Tu transacción se ha completado correctamente.",
+                confirmButtonColor: "#28a745",
+            });
+
+            cardElement.clear();
+        }
+
+        setLoading(false);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="form-group mb-3">
+                <CardElement className="form-control" />
+            </div>
+            <button
+                className="btn btn-success w-100"
+                type="submit"
+                disabled={!stripe || loading}
+            >
+                {loading ? (
+                    <span>
+                        <i className="fa fa-spinner fa-spin me-2"></i>Procesando...
+                    </span>
+                ) : (
+                    <span>
+                        <i className="fa-solid fa-credit-card me-2"></i>Proceder al pago
+                    </span>
+                )}
+            </button>
+        </form>
+    );
+};
+
+
 export const Cart = () => {
     const { store, dispatch } = useGlobalReducer();
     const { cart } = store;
+    const isAuthenticated = sessionStorage.getItem("access_token");
 
     const subtotal = cart.reduce((s, it) => s + it.price * (it.qty || 1), 0);
     const envio = subtotal > 999 ? 0 : 99;
@@ -93,9 +168,9 @@ export const Cart = () => {
                                     <span>Total</span>
                                     <span>{money(total)}</span>
                                 </div>
-                                <button className="btn btn-success w-100">
-                                    <i className="fa-solid fa-credit-card me-2"></i>Proceder al pago
-                                </button>
+                                <Elements stripe={stripePomise}>
+                                    <CheckoutForm />
+                                </Elements>
                                 <button
                                     className="btn btn-link text-danger w-100 mt-2"
                                     onClick={() => dispatch({ type: "clear_cart" })}
