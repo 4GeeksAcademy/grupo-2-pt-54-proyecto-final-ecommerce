@@ -6,7 +6,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 const Product = () => {
     const { productId } = useParams();
     const { dispatch } = useGlobalReducer();
-    const [product, setProduct] = useState(null);
+    const [zproduct, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
