@@ -14,7 +14,10 @@ import AllProducts from "./pages/AllProducts";
 import EditProduct from "./pages/EditProduct";
 import { Cart } from "./pages/Cart";
 import { SearchResults } from "./pages/SearchResults";
-import  Product  from "./pages/Product";
+import Product from "./pages/Product";
+import Verify from "./pages/Verify";
+import Forgot from "./pages/Forgot";
+import Reset from "./pages/Reset";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +41,10 @@ export const router = createBrowserRouter(
       <Route path="/product/:productId" element={<Product />} />
       <Route path="/search-results" element={<SearchResults />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/verify" element={<Verify />} />
+      <Route path="/reset-password" element={<Forgot />} />
+      <Route path="/new-password" element={<Reset />} />
+
     </Route>
   )
 );
