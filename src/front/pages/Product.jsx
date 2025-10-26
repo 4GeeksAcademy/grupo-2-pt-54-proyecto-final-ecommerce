@@ -40,30 +40,34 @@ const Product = () => {
     return (
         <div className="container py-5">
             <div className="row justify-content-center">
-                <div className="col-12 col-lg-10">
+                <div className="col-12 col-xl-10">
                     <div
                         className="card border-0 shadow-lg rounded-4 overflow-hidden"
                         style={{
-                            backgroundColor: "#111",
-                            color: "#f8f9fa",
+                            backgroundColor: "#ffffff",
+                            color: "#212529",
+                            transform: "scale(1.02)",
+                            transition: "transform .3s ease, box-shadow .3s ease",
                         }}
+                        onMouseOver={(e) => (e.currentTarget.style.boxShadow = "0 0 30px rgba(0, 128, 0, 0.25)")}
+                        onMouseOut={(e) => (e.currentTarget.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.15)")}
                     >
                         <div className="row g-0 align-items-center">
-                            <div className="col-12 col-md-6 bg-dark d-flex align-items-center justify-content-center p-4">
+                            <div className="col-12 col-md-6 bg-light d-flex align-items-center justify-content-center p-5">
                                 <div
-                                    className="bg-black rounded-4 d-flex align-items-center justify-content-center w-100"
-                                    style={{ minHeight: 420 }}
+                                    className="bg-white rounded-4 d-flex align-items-center justify-content-center w-100 shadow-sm"
+                                    style={{ minHeight: 480 }}
                                 >
                                     <img
                                         src={product.image}
                                         alt={product.name}
-                                        className="img-fluid rounded-3 shadow"
+                                        className="img-fluid rounded-3"
                                         style={{
-                                            maxHeight: 420,
+                                            maxHeight: 460,
                                             objectFit: "contain",
                                             transition: "transform .3s ease",
                                         }}
-                                        onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                                        onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
                                         onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
                                     />
                                 </div>
@@ -74,16 +78,18 @@ const Product = () => {
                                     <h2 className="card-title text-success fw-bold mb-0">
                                         {product.name}
                                     </h2>
-                                    <span className="badge bg-success-subtle border border-success text-success">
+                                    <span className="badge bg-light border border-success text-success fw-semibold px-3 py-2">
                                         <i className="fa-solid fa-truck-fast me-1"></i>Rápido
                                     </span>
                                 </div>
 
-                                <p className="text-secondary mb-4 fs-6">{product.description}</p>
+                                <p className="text-muted mb-4 fs-6 lh-sm">
+                                    {product.description}
+                                </p>
 
                                 <div className="mb-4">
-                                    <span className="text-light me-2 fs-5">Precio:</span>
-                                    <span className="fs-3 fw-bold text-success">
+                                    <span className="me-2 fs-5 fw-semibold text-dark">Precio:</span>
+                                    <span className="fs-2 fw-bold text-success">
                                         ${product.price}
                                     </span>
                                 </div>
@@ -93,7 +99,7 @@ const Product = () => {
                                     <div className="input-group input-group-sm" style={{ maxWidth: 200 }}>
                                         <button
                                             type="button"
-                                            className="btn btn-outline-success border-success text-light"
+                                            className="btn btn-outline-success border-success"
                                             style={{ borderRadius: "8px 0 0 8px" }}
                                             onClick={() => setQuantity(Math.max(1, (quantity || 1) - 1))}
                                         >
@@ -102,16 +108,20 @@ const Product = () => {
                                         <input
                                             type="number"
                                             min="1"
-                                            className="form-control text-center bg-dark text-light border-success"
+                                            className="form-control text-center border-success"
                                             value={quantity}
                                             onChange={(e) =>
                                                 setQuantity(Math.max(1, parseInt(e.target.value) || 1))
                                             }
-                                            style={{ borderLeft: "none", borderRight: "none", borderRadius: 0 }}
+                                            style={{
+                                                borderLeft: "none",
+                                                borderRight: "none",
+                                                borderRadius: 0,
+                                            }}
                                         />
                                         <button
                                             type="button"
-                                            className="btn btn-outline-success border-success text-light"
+                                            className="btn btn-outline-success border-success"
                                             style={{ borderRadius: "0 8px 8px 0" }}
                                             onClick={() => setQuantity((quantity || 1) + 1)}
                                         >
@@ -134,7 +144,7 @@ const Product = () => {
                                     <i className="fa-solid fa-arrow-left me-2"></i>Volver al catálogo
                                 </Link>
 
-                                <div className="mt-4 small text-center">
+                                <div className="mt-4 text-muted small text-center">
                                     <i className="fa-solid fa-shield-halved text-success me-2"></i>
                                     Compra segura • Envíos en menos de 48h
                                 </div>
