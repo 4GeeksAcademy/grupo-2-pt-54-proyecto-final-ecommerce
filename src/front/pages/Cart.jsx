@@ -89,18 +89,18 @@ export const Cart = () => {
 
     return (
         <div className="container py-4">
-            <div className="d-flex align-items-center justify-content-between mb-3">
-                <h2 className="m-0">
+            <div className="d-flex align-items-center justify-content-between mb-4">
+                <h2 className="m-0 text-success">
                     <i className="fa-solid fa-basket-shopping me-2"></i>Mi carrito
                 </h2>
-                <Link to="/" className="btn btn-outline-secondary">
+                <Link to="/" className="btn btn-outline-success rounded-pill">
                     <i className="fa-solid fa-arrow-left me-2"></i>Seguir comprando
                 </Link>
             </div>
 
             {cart.length === 0 ? (
-                <div className="alert alert-secondary">
-                    <i className="fa-regular fa-face-frown me-2"></i>
+                <div className="alert alert-secondary d-flex align-items-center justify-content-center gap-2 rounded-3 shadow-sm">
+                    <i className="fa-regular fa-face-frown"></i>
                     Tu carrito está vacío.
                 </div>
             ) : (
@@ -108,36 +108,65 @@ export const Cart = () => {
                     <div className="col-12 col-lg-8">
                         <div className="list-group">
                             {cart.map((it) => (
-                                <div key={it.id} className="list-group-item d-flex align-items-center">
-                                    <img
-                                        src={it.image}
-                                        alt={it.name}
-                                        className="rounded me-3"
-                                        style={{ width: 72, height: 72, objectFit: "cover" }}
-                                    />
+                                <div
+                                    key={it.id}
+                                    className="list-group-item border-0 shadow-sm rounded-3 mb-3 p-3 d-flex align-items-center"
+                                    style={{ background: "#fff" }}
+                                >
+                                    <div
+                                        className="bg-light rounded d-flex align-items-center justify-content-center me-3"
+                                        style={{ width: 76, height: 76 }}
+                                    >
+                                        <img
+                                            src={it.image}
+                                            alt={it.name}
+                                            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                                        />
+                                    </div>
+
                                     <div className="flex-grow-1">
-                                        <div className="fw-semibold">{it.name}</div>
-                                        <div className="text-success">{money(it.price)}</div>
-                                        <div className="d-flex align-items-center gap-2 mt-2">
+                                        <div className="d-flex align-items-start justify-content-between">
+                                            <div>
+                                                <div className="fw-semibold">{it.name}</div>
+                                                <div className="text-success fw-bold small">{money(it.price)}</div>
+                                            </div>
+                                            <span className="badge text-bg-light border small">
+                                                <i className="fa-solid fa-truck-fast text-success me-1"></i>Rápido
+                                            </span>
+                                        </div>
+
+                                        <div className="d-flex align-items-center gap-2 mt-3">
+                                            <div className="input-group input-group-sm" style={{ width: 120 }}>
+                                                <button
+                                                    className="btn btn-outline-secondary"
+                                                    type="button"
+                                                    style={{ borderRadius: "8px 0 0 8px" }}
+                                                    onClick={() => dispatch({ type: "decrease_from_cart", payload: it.id })}
+                                                    aria-label="Disminuir"
+                                                >
+                                                    <i className="fa-solid fa-minus"></i>
+                                                </button>
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    className="form-control text-center"
+                                                    value={it.qty || 1}
+                                                    readOnly
+                                                    style={{ borderLeft: "none", borderRight: "none", borderRadius: 0 }}
+                                                />
+                                                <button
+                                                    className="btn btn-outline-success"
+                                                    type="button"
+                                                    style={{ borderRadius: "0 8px 8px 0" }}
+                                                    onClick={() => dispatch({ type: "add_to_cart", payload: { product: it, qty: 1 } })}
+                                                    aria-label="Aumentar"
+                                                >
+                                                    <i className="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+
                                             <button
-                                                className="btn btn-sm btn-outline-secondary"
-                                                onClick={() => dispatch({ type: "decrease_from_cart", payload: it.id })}
-                                                aria-label="Disminuir"
-                                            >
-                                                <i className="fa-solid fa-minus"></i>
-                                            </button>
-                                            <span className="px-2">{it.qty}</span>
-                                            <button
-                                                className="btn btn-sm btn-outline-success"
-                                                onClick={() =>
-                                                    dispatch({ type: "add_to_cart", payload: { product: it, qty: 1 } })
-                                                }
-                                                aria-label="Aumentar"
-                                            >
-                                                <i className="fa-solid fa-plus"></i>
-                                            </button>
-                                            <button
-                                                className="btn btn-sm btn-link text-danger ms-2"
+                                                className="btn btn-link text-danger btn-sm ms-2"
                                                 onClick={() => dispatch({ type: "remove_from_cart", payload: it.id })}
                                                 aria-label="Eliminar"
                                             >
@@ -145,41 +174,52 @@ export const Cart = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="ms-3 fw-bold">{money(it.price * (it.qty || 1))}</div>
+
+                                    <div className="ms-3 text-end">
+                                        <div className="fw-bold">{money(it.price * (it.qty || 1))}</div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     <div className="col-12 col-lg-4">
-                        <div className="card">
+                        <div className="card border-0 shadow-sm rounded-3">
                             <div className="card-body">
-                                <h5 className="card-title mb-3">Resumen</h5>
+                                <h5 className="card-title mb-3 text-success">
+                                    <i className="fa-solid fa-receipt me-2"></i>Resumen
+                                </h5>
                                 <div className="d-flex justify-content-between mb-1">
-                                    <span>Subtotal</span>
-                                    <span>{money(subtotal)}</span>
+                                    <span className="text-muted">Subtotal</span>
+                                    <span className="fw-semibold">{money(subtotal)}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-1">
-                                    <span>Envío</span>
-                                    <span>{envio === 0 ? "Gratis" : money(envio)}</span>
+                                    <span className="text-muted">Envío</span>
+                                    <span className={envio === 0 ? "text-success fw-semibold" : "fw-semibold"}>
+                                        {envio === 0 ? "Gratis" : money(envio)}
+                                    </span>
                                 </div>
                                 <hr />
-                                <div className="d-flex justify-content-between fw-semibold mb-3">
-                                    <span>Total</span>
-                                    <span>{money(total)}</span>
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <span className="fw-semibold">Total</span>
+                                    <span className="fs-5 fw-bold text-success">{money(total)}</span>
                                 </div>
+
                                 <Elements stripe={stripePomise}>
                                     <CheckoutForm />
                                 </Elements>
+
                                 <button
-                                    className="btn btn-link text-danger w-100 mt-2"
+                                    className="btn btn-link text-success w-100 mt-3"
                                     onClick={() => dispatch({ type: "clear_cart" })}
                                 >
                                     <i className="fa-solid fa-trash-can me-2"></i>Vaciar carrito
                                 </button>
                             </div>
                         </div>
-                        <div className="text-muted small mt-2">
+
+                        <div className="text-muted small mt-2 d-flex align-items-center">
+                            <i className="fa-solid fa-gift text-success me-2"></i>
                             Envío gratis a partir de $999 MXN.
                         </div>
                     </div>

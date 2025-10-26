@@ -80,7 +80,7 @@ export default function CartDrawer() {
                         className="btn btn-success w-100 mt-2"
                         onClick={() => dispatch({ type: "close_cart" })}
                     >
-                        <i className="fa-solid fa-credit-card me-2"></i>Proceder al pago
+                        <i className="fa-solid fa-credit-card me-2"></i>Ir al Carrito
                     </Link>
                 </div>
             </aside>
