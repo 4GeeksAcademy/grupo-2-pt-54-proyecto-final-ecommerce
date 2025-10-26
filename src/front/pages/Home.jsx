@@ -33,60 +33,123 @@ export const Home = () => {
 
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getProducts()
   }, [])
 
   return (
     <div className="container py-4">
       <div className="text-center mb-4">
-        <h1 className="mb-2 text-success"><i className="fa-solid fa-store me-2"></i>ShopNow</h1>
+        <h1 className="mb-2 text-success">
+          <i className="fa-solid fa-store me-2"></i>ShopNow
+        </h1>
         <p className="text-muted mb-1">Catálogo</p>
-        <span className="badge bg-success"><i className="fa-solid fa-cart-shopping me-1"></i>{cartQty}</span>
+        <span className="badge bg-success">
+          <i className="fa-solid fa-cart-shopping me-1"></i>{cartQty}
+        </span>
       </div>
 
-
-      <div className="row g-3">
-        {store.products?.map((p) => (
-          <div className="col-12 col-sm-6 col-lg-4" key={p.id}>
-            <div className="card h-100 shadow-sm">
-              <img src={p.image} className="card-img-top" alt={p.name} />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title mb-1">{p.name}</h5>
-                <span className="text-success fw-bold mb-3">
-                  {new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(p.price)}
-                </span>
-
-                <div className="d-flex align-items-center gap-2 mb-3">
-                  <label className="form-label m-0 small">Cantidad</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={quantities[p.id] || 1}
-                    onChange={(e) => setQty(p.id, e.target.value)}
-                    className="form-control"
-                    style={{ width: 90 }}
+      {store.products?.length ? (
+        <section className="row g-3 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+          {store.products.map((p) => (
+            <div key={p.id} className="col">
+              <article className="card h-100 border-0 shadow-sm rounded-3 position-relative bg-white overflow-hidden">
+                <div
+                  className="bg-light d-flex align-items-center justify-content-center"
+                  style={{
+                    height: 160,
+                    overflow: "hidden",
+                    backgroundColor: "#f8f9fa",
+                  }}
+                >
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="w-auto h-100"
+                    style={{
+                      objectFit: "contain",
+                      transition: "transform .25s ease-in-out",
+                    }}
+                    onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
+                    onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
                   />
                 </div>
 
-                <button onClick={() => addToCart(p)} className="btn btn-success mt-auto">
-                  <i className="fa-solid fa-cart-plus me-2"></i>Agregar
+                <div className="card-body p-2 d-flex flex-column">
+                  <h6 className="text-truncate mb-1 fw-semibold" title={p.name}>
+                    <i className="fa-solid fa-box me-1 text-muted"></i>{p.name}
+                  </h6>
+
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="text-success fw-bold small">
+                      {new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(p.price)}
+                    </span>
+                    <span className="badge text-bg-light border small">
+                      <i className="fa-solid fa-truck-fast text-success me-1"></i>Rápido
+                    </span>
+                  </div>
+
+                  <div className="d-flex justify-content-center align-items-center mb-3">
+                    <div className="input-group input-group-sm" style={{ width: "110px" }}>
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        style={{ borderRadius: "6px 0 0 6px" }}
+                        onClick={() => setQty(p.id, Math.max(1, (quantities[p.id] || 1) - 1))}
+                      >
+                        <i className="fa-solid fa-minus"></i>
+                      </button>
+                      <input
+                        type="number"
+                        min="1"
+                        className="form-control text-center"
+                        value={quantities[p.id] || 1}
+                        onChange={(e) => setQty(p.id, e.target.value)}
+                        style={{
+                          borderLeft: "none",
+                          borderRight: "none",
+                          borderRadius: 0,
+                          fontSize: "0.9rem",
+                          appearance: "textfield",
+                          MozAppearance: "textfield",
+                        }}
+                      />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        style={{ borderRadius: "0 6px 6px 0" }}
+                        onClick={() => setQty(p.id, (quantities[p.id] || 1) + 1)}
+                      >
+                        <i className="fa-solid fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="d-grid gap-1 mt-auto">
+                    <button onClick={() => addToCart(p)} className="btn btn-success btn-sm">
+                      <i className="fa-solid fa-cart-plus me-1"></i>Agregar al Carrito
+                    </button>
+                    <Link to={`/product/${p.id}`} className="btn btn-outline-success btn-sm">
+                      <i className="fa-solid fa-eye me-1"></i>Ver más
+                    </Link>
+                  </div>
+                </div>
+
+                <button
+                  className="btn btn-light btn-sm position-absolute top-0 end-0 m-2 border rounded-circle"
+                  style={{ width: 28, height: 28, padding: 0 }}
+                >
+                  <i className="fa-regular fa-bookmark"></i>
                 </button>
-                <Link to={`/product/${p.id}`} className="btn btn-success mt-auto">
-                  <i className="fa-solid fa-cart-plus me-2"></i>Ver más
-                </Link>
-              </div>
+              </article>
             </div>
-          </div>
-        ))}
-        {!store.products?.length && (
-          <div className="col-12">
-            <div className="alert alert-secondary text-center mb-0">
-              <i className="fa-regular fa-circle-xmark me-2"></i>Sin productos
-            </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </section>
+      ) : (
+        <div className="alert alert-secondary text-center mb-0">
+          <i className="fa-regular fa-circle-xmark me-2"></i>Sin productos
+        </div>
+      )}
     </div>
   );
 };

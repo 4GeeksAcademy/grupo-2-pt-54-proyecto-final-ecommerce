@@ -11,6 +11,56 @@
 	background-color: #12ffe3;
 	overflow-x: hidden;
 } */
+
+.auth-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #0f0f0f;
+  border: 1px solid #198754;
+  border-radius: 9999px;
+  padding: 4px;
+  gap: 4px;
+  width: 340px;
+}
+
+.auth-toggle .tab {
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  color: #9aa0a6;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 2;
+  user-select: none;
+}
+
+.auth-toggle .knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 8px);
+  height: calc(100% - 8px);
+  background: #198754;
+  border-radius: 9999px;
+  transition: left .3s ease, transform .3s ease;
+}
+
+#reg-log:not(:checked) ~ .auth-tabs .tab.login { color: #ffffff; }
+#reg-log:checked ~ .auth-tabs .tab.signup { color: #ffffff; }
+
+#reg-log:checked ~ .auth-tabs .auth-toggle .knob { left: calc(50% + 4px); }
+
+.card-3d-wrapper {
+  transition: transform .6s ease;
+  transform-style: preserve-3d;
+}
+
+.card-front, .card-back { backface-visibility: hidden; }
+.card-back { transform: rotateY(180deg); }
+
+#reg-log:checked ~ .card-3d-wrap .card-3d-wrapper { transform: rotateY(180deg); }
+
 a {
 	cursor: pointer;
   transition: all 200ms linear;
@@ -70,8 +120,8 @@ h6 span{
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  color: #ffeba7;
-  background-color: #102770;
+  color: white;
+  background-color: green;
   font-family: 'unicons';
   content: '\eb4f';
   z-index: 20;
@@ -286,3 +336,16 @@ h6 span{
 	width: auto;
 	display: block;
 } 
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
