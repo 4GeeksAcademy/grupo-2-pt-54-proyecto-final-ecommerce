@@ -21,7 +21,30 @@ const AllProducts = () => {
 
   }
 
+  const handleUserInfo = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user-info`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error("Error al obtener datos")
+      }
+
+      const body = await response.json()
+
+      dispatch({ type: "add_user_info", payload: { ...body } })
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
+    handleUserInfo()
     getProducts()
   }, [])
 
@@ -48,65 +71,69 @@ const AllProducts = () => {
   }
 
   return (
-  <div className="container py-4">
-    <div className="text-center mb-4">
-      <h1 className="mb-2 text-success">
-        <i className="fa-solid fa-store me-2"></i>ShopNow
-      </h1>
-      <p className="text-muted mb-1">Inventario</p>
-      <div className="d-flex justify-content-center align-items-center gap-3 mt-2">
-        <span className="badge bg-success-subtle border border-success text-success">
-          <i className="fa-solid fa-boxes-stacked me-2"></i>{store.products?.length || 0} productos
-        </span>
-        <Link to="/new-product" className="btn btn-success btn-sm rounded-pill">
-          <i className="fa-solid fa-plus me-2"></i>Nuevo producto
-        </Link>
-      </div>
-    </div>
-
-    <div className="bg-black rounded-3 p-3 mb-3 border border-success-subtle">
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-2">
-        <div className="text-success fw-semibold d-flex align-items-center">
-          <i className="fa-solid fa-layer-group me-2"></i>Gestión de catálogo
-        </div>
-        <div className="d-flex align-items-center gap-2">
-          <span className="badge text-bg-dark border">
-            <i className="fa-regular fa-circle-check me-2 text-success"></i>Activo
+    <div className="container py-4">
+      <div className="text-center mb-4">
+        <h1 className="mb-2 text-success">
+          <i className="fa-solid fa-store me-2"></i>ShopNow
+        </h1>
+        <p className="text-muted mb-1">Inventario</p>
+        <div className="d-flex justify-content-center align-items-center gap-3 mt-2">
+          <span className="badge bg-success-subtle border border-success text-success">
+            <i className="fa-solid fa-boxes-stacked me-2"></i>{store.products?.length || 0} productos
           </span>
-          <Link to="/new-product" className="btn btn-outline-success btn-sm">
-            <i className="fa-solid fa-cart-plus me-2"></i>Agregar
+          <Link to="/new-product" className="btn btn-success btn-sm rounded-pill">
+            <i className="fa-solid fa-plus me-2"></i>Nuevo producto
           </Link>
         </div>
       </div>
-    </div>
 
-    {store.products?.length ? (
-      <section className="row g-3 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
-        {store.products.map((p) => (
-          <div key={p.id} className="col">
-            <ProductCard
-              id={p.id}
-              image={p.image}
-              name={p.name}
-              description={p.description}
-              price={p.price}
-              stock={p.stock}
-              category_id={p.category_id}
-              onOpenModal={handleOpenModal}
-            />
+      <div className="bg-black rounded-3 p-3 mb-3 border border-success-subtle">
+        <div className="d-flex flex-wrap align-items-center justify-content-between gap-2">
+          <div className="text-success fw-semibold d-flex align-items-center">
+            <i className="fa-solid fa-layer-group me-2"></i>Gestión de catálogo
           </div>
-        ))}
-      </section>
-    ) : (
-      <div className="alert alert-secondary d-flex align-items-center justify-content-center gap-2">
-        <i className="fa-regular fa-circle-xmark"></i>
-        No hay productos aún
+          <div className="d-flex align-items-center gap-2">
+            <span className="badge text-bg-dark border">
+              <i className="fa-regular fa-circle-check me-2 text-success"></i>Activo
+            </span>
+            <Link to="/new-product" className="btn btn-outline-success btn-sm">
+              <i className="fa-solid fa-cart-plus me-2"></i>Agregar
+            </Link>
+          </div>
+        </div>
       </div>
-    )}
 
-    <DeleteProduct show={showModal} onCancel={handleCancel} onDelete={handleDeleteProduct} />
-  </div>
-);
+      {store.products?.length ? (
+        <section className="row g-3 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+          {store.products
+            ?.filter(p =>
+              store.user_info?.info?.role === "admin" ? p : String(p.vendor_id) === store.user_info?.id
+            )
+            .map((p) => (
+              <div key={p.id} className="col">
+                <ProductCard
+                  id={p.id}
+                  image={p.image}
+                  name={p.name}
+                  description={p.description}
+                  price={p.price}
+                  stock={p.stock}
+                  category_id={p.category_id}
+                  onOpenModal={handleOpenModal}
+                />
+              </div>
+            ))}
+        </section>
+      ) : (
+        <div className="alert alert-secondary d-flex align-items-center justify-content-center gap-2">
+          <i className="fa-regular fa-circle-xmark"></i>
+          No hay productos aún
+        </div>
+      )}
+
+      <DeleteProduct show={showModal} onCancel={handleCancel} onDelete={handleDeleteProduct} />
+    </div>
+  );
 
 }
 export default AllProducts

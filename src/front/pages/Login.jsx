@@ -53,6 +53,7 @@ export const Login = () => {
             if (regLogCheckbox) regLogCheckbox.checked = false;
             // Limpiar datos del formulario de registro pero mantener role por defecto
             setNewUser({ role: 'USER' });
+            navigate("/cart")
         } catch (err) {
             console.error(err)
         }
