@@ -33,7 +33,7 @@ class User(db.Model):
             "id": self.id,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "role": self.role,
+            "role": self.role.value,
             "is_active": self.is_active,
             # do not serialize the password, its a security breach
         }
@@ -88,6 +88,7 @@ class Product(db.Model):
             "image": self.image,
             "category_id": self.category_id,
             "stock": self.stock,
+            "vendor_id": self.vendor_id, 
         }
 
 class Order(db.Model):

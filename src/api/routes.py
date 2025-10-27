@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Product, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Blueprint('api', __name__)
 
@@ -104,3 +105,14 @@ def get_products_by_nam(product_name):
     except Exception as error:
         print(error)
         return jsonify({"msg": "Ocurrió un error", "error": str(error)}), 500
+
+@api.route('/user-info', methods=['GET'])
+@jwt_required()
+def handle_get_user_info():
+    user_id = get_jwt_identity()
+    claims = get_jwt()
+    claim_email = claims.get("email")
+    
+    user = db.session.execute(db.select(User).filter_by(email=claim_email)).scalar_one_or_none()
+
+    return jsonify({'id': user_id, "info": user.serialize()}), 200

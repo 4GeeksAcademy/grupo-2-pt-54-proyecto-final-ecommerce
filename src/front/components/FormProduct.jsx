@@ -3,7 +3,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer"
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const FormProduct = (props) => {
-    const [product, setProduct] = useState({ "vendor_id": 2 });
+    const [product, setProduct] = useState({});
     const { store, dispatch } = useGlobalReducer()
     const navigate = useNavigate();
     const params = useParams()
@@ -34,11 +34,11 @@ const FormProduct = (props) => {
             const file = files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProduct((prev) => ({ ...prev, image: reader.result })); // Base64
+                setProduct((prev) => ({ ...prev, image: reader.result, vendor_id: store.user_info.id })); // Base64
             };
             reader.readAsDataURL(file);
         } else {
-            setProduct((prev) => ({ ...prev, [id]: value }));
+            setProduct((prev) => ({ ...prev, [id]: value, vendor_id: store.user_info.id }));
         }
     };
 

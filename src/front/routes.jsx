@@ -33,10 +33,6 @@ export const router = createBrowserRouter(
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
-      <Route path="/new-product" element={<Newproduct />} />
-      <Route path="/edit-product/:productId" element={<EditProduct />} />
-      <Route path="/all-products" element={<AllProducts />} />
-      <Route path="/new-product" element={<Newproduct />} />
       <Route path="/login" element={<Login />} />
       <Route path="/products/:categoryId" element={<Products />} />
       <Route path="/product/:productId" element={<Product />} />
@@ -47,6 +43,9 @@ export const router = createBrowserRouter(
 
       <Route element={<ProtectedRoutes />}>
         <Route path="/cart" element={<Cart />} />
+        <Route path="/edit-product/:productId" element={<EditProduct />} />
+        <Route path="/all-products" element={<AllProducts />} />
+        <Route path="/new-product" element={<Newproduct />} />
       </Route>
     </Route>
   )
