@@ -27,6 +27,15 @@ const FormProduct = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (store.categories.length > 0 && !product.category_id) {
+            setProduct((prev) => ({
+                ...prev,
+                category_id: store.categories[0].id, 
+            }));
+        }
+    }, [store.categories]);
+
     const handleOnChange = (event) => {
         const { id, value, files } = event.target;
 
