@@ -41,11 +41,21 @@ export const Login = () => {
             );
             if (!response.ok) {
                 throw new Error("Error al registrar usuario");
-
             }
+
+            // Si llega aquí, el registro fue exitoso -> mostrar confirmación,
+            // limpiar el formulario de registro y volver a la pestaña de Login.
+            const body = await response.json();
+            // Mensaje al usuario (puedes reemplazar por un toast si tienes uno)
+            alert('Cuenta creada con éxito. Por favor, inicia sesión.');
+            // Desmarcar el checkbox para mostrar la tarjeta de Login (si existe)
+            const regLogCheckbox = document.getElementById('reg-log');
+            if (regLogCheckbox) regLogCheckbox.checked = false;
+            // Limpiar datos del formulario de registro pero mantener role por defecto
+            setNewUser({ role: 'USER' });
             navigate("/cart")
         } catch (err) {
-            console.error(error)
+            console.error(err)
         }
     }
 
@@ -72,7 +82,7 @@ export const Login = () => {
             navigate("/cart")
 
         } catch (err) {
-            console.error(error)
+            console.error(err)
         }
     }
 
