@@ -120,6 +120,18 @@ export const Navbar = () => {
 							</span>
 						</button>
 
+						<Link to="/all-products"
+							className="btn btn-success rounded-pill position-relative px-3"
+						>
+							<i className="fa-solid fa-bag-shopping"></i>
+							<span
+								className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-success border"
+								style={{ fontSize: "0.65rem" }}
+							>
+								Sell
+							</span>
+						</Link>
+
 						{isAuthenticated ? (
 							<button
 								type="button"

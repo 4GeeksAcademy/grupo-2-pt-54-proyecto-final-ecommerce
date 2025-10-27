@@ -1,5 +1,6 @@
 export const initialStore = () => {
   return {
+    user_info: {},
     message: null,
     access_token : '',
     products: [
@@ -92,6 +93,12 @@ export default function storeReducer(store, action = {}) {
     case "set_search_results":
       return { ...store, searchResults: [...action.payload.products] };
 
+    case "add_user_info":
+      
+      return {
+        ...store,
+        user_info: {...action.payload}
+      };
     default:
       throw Error("Unknown action.");
   }

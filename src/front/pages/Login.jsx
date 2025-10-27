@@ -43,6 +43,7 @@ export const Login = () => {
                 throw new Error("Error al registrar usuario");
 
             }
+            navigate("/cart")
         } catch (err) {
             console.error(error)
         }
