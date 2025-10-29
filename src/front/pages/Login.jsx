@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 
 
 export const Login = () => {
@@ -138,7 +138,14 @@ export const Login = () => {
                                                     />
                                                     <i className="fa-solid fa-lock input-icon text-success"></i>
                                                 </div>
-                                                <a className="btn btn-success mt-4 w-100 rounded-pill" onClick={handleLogin}>
+                                                {/* Enlace para restablecer contraseña */}
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                    <Link to="/reset-password" className="small text-success" style={{ textDecoration: 'none' }}>
+                                                        <i className="fa-solid fa-key me-1"></i>Olvidé mi contraseña
+                                                    </Link>
+                                                </div>
+
+                                                <a className="btn btn-success mt-3 w-100 rounded-pill" onClick={handleLogin}>
                                                     Submit
                                                 </a>
                                             </div>
